@@ -5,7 +5,7 @@ run = "python run_dashboard.py"
 channel = "stable-25_05"
 
 [workflows]
-runButton = "Run Arbitrage Engine"
+runButton = "Setup Polygon Bot"
 
 [[workflows.workflow]]
 name = "Run Arbitrage Engine"
@@ -15,6 +15,27 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python run_dashboard.py"
+
+[[workflows.workflow]]
+name = "Setup Polygon Bot"
+author = 45426503
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python3 setup_polygon_env.py"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "chmod +x run_polygon_bot.sh"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"✅ Polygon arbitrage bot setup complete!\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"Edit .env file with your credentials, then run: ./run_polygon_bot.sh\""
 
 [deployment]
 run = ["sh", "-c", "python run_dashboard.py"]
