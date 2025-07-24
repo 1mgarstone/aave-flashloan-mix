@@ -1,4 +1,5 @@
 modules = ["python-3.12", "bash"]
+run = "python run_dashboard.py"
 
 [nix]
 channel = "stable-25_05"
@@ -14,3 +15,6 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python run_dashboard.py"
+
+[deployment]
+run = ["sh", "-c", "python run_dashboard.py"]
