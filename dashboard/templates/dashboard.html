@@ -20,76 +20,76 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 600px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 10px;
         }
 
         .header {
             text-align: center;
-            padding: 20px 0;
-            border-bottom: 2px solid rgba(255,255,255,0.2);
-            margin-bottom: 30px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 15px;
         }
 
         .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 1.25rem;
+            margin-bottom: 5px;
         }
 
         .header p {
             opacity: 0.8;
-            font-size: 1.1rem;
+            font-size: 0.55rem;
         }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
         }
 
         .stat-card {
             background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 25px;
+            backdrop-filter: blur(5px);
+            border-radius: 7px;
+            padding: 12px;
             text-align: center;
             border: 1px solid rgba(255,255,255,0.2);
         }
 
         .stat-card h3 {
-            font-size: 0.9rem;
+            font-size: 0.45rem;
             opacity: 0.8;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
         .stat-value {
-            font-size: 2rem;
+            font-size: 1rem;
             font-weight: bold;
             color: #4ade80;
         }
 
         .controls {
             display: flex;
-            gap: 15px;
+            gap: 7px;
             justify-content: center;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
             flex-wrap: wrap;
         }
 
         .btn {
-            padding: 12px 30px;
+            padding: 6px 15px;
             border: none;
-            border-radius: 25px;
-            font-size: 1rem;
+            border-radius: 12px;
+            font-size: 0.5rem;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
         .btn-start {
@@ -103,16 +103,17 @@
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
         }
 
         .status {
             text-align: center;
-            margin: 20px 0;
-            padding: 15px;
-            border-radius: 10px;
+            margin: 10px 0;
+            padding: 7px;
+            border-radius: 5px;
             background: rgba(255,255,255,0.1);
+            font-size: 0.75rem;
         }
 
         .status.running {
@@ -127,23 +128,24 @@
 
         .logs {
             background: rgba(0,0,0,0.3);
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 20px;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
             font-family: 'Courier New', monospace;
-            max-height: 300px;
+            max-height: 150px;
             overflow-y: auto;
+            font-size: 0.65rem;
         }
 
         .log-entry {
-            margin-bottom: 5px;
-            padding: 5px 0;
+            margin-bottom: 2px;
+            padding: 2px 0;
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         .timestamp {
             color: #94a3b8;
-            font-size: 0.9rem;
+            font-size: 0.45rem;
         }
 
         .pulse {
