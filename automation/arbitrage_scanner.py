@@ -70,7 +70,7 @@ class PolygonArbitrageScanner:
         self.min_profit_percentage = float(os.getenv('MIN_PROFIT_PERCENTAGE', '0.30'))
         self.max_gas_price = int(os.getenv('MAX_GAS_PRICE_GWEI', '50')) * 10**9
         self.scan_interval = int(os.getenv('SCAN_INTERVAL_SECONDS', '1'))
-        self.monitoring_interval = int(os.getenv('MONITORING_INTERVAL', '15000'))
+        self.monitoring_interval = int(os.getenv('MONITORING_INTERVAL', '13146'))
 
         # Strategy parameters
         self.loan_fee_percentage = float(os.getenv('LOAN_FEE_PERCENTAGE', '60'))

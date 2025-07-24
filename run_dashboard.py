@@ -36,13 +36,13 @@ def check_requirements():
 def run_dashboard():
     """Run the Flask dashboard"""
     print("🚀 Starting Polygon Arbitrage Engine Dashboard...")
-    print("📊 Dashboard will be available at: http://0.0.0.0:5000")
-    print("🔗 Access from browser: http://localhost:5000")
+    print("📊 Dashboard will be available at: http://0.0.0.0:3146")
+    print("🔗 Access from browser: http://localhost:3146")
     print("\n" + "="*50)
     
     # Import and run the dashboard
     from dashboard.app import app
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    app.run(host='0.0.0.0', port=3146, debug=False)
 
 def main():
     """Main application entry point"""

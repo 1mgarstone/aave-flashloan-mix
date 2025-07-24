@@ -35,7 +35,7 @@ class PolygonArbitrageBot:
         # Trade amounts (in wei)
         self.trade_amounts = [
             Web3.toWei(1000, 'ether'),    # 1000 MATIC
-            Web3.toWei(5000, 'ether'),    # 5000 MATIC
+            Web3.toWei(3146, 'ether'),    # 3146 MATIC
             Web3.toWei(10000, 'ether'),   # 10000 MATIC
         ]
         
@@ -131,7 +131,7 @@ class PolygonArbitrageBot:
                 self.dexes['QUICKSWAP'],         # dexA
                 self.dexes['SUSHISWAP'],         # dexB
                 opportunity['profit'],            # expected profit
-                {"from": self.account, "gas_limit": 500000}
+                {"from": self.account, "gas_limit": 314600}
             )
             
             print(f"✅ Transaction sent: {tx.txid}")
