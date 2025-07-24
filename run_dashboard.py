@@ -16,7 +16,7 @@ def check_requirements():
     """Check if all required environment variables are set"""
     required_vars = [
         'PRIVATE_KEY',
-        'POLYGON_RPC_URL'
+        'ALCHEMY_API_URL_MAINNET'
     ]
     
     missing_vars = []

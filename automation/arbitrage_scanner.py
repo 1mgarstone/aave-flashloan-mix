@@ -48,7 +48,7 @@ class PolygonArbitrageScanner:
     def __init__(self):
         # Load environment variables
         self.private_key = os.getenv('PRIVATE_KEY')
-        self.rpc_url = os.getenv('POLYGON_RPC_URL')
+        self.rpc_url = os.getenv('ALCHEMY_API_URL_MAINNET')
         self.contract_address = os.getenv('ARBITRAGE_CONTRACT_ADDRESS')
 
         # API Keys for aggregators
@@ -58,7 +58,7 @@ class PolygonArbitrageScanner:
         self.zerox_api_url = os.getenv('ZEROX_API_URL', 'https://api.0x.org')
 
         if not self.private_key or not self.rpc_url:
-            raise ValueError("Missing required environment variables")
+            raise ValueError("Missing required environment variables: PRIVATE_KEY and ALCHEMY_API_URL_MAINNET")
 
         # Initialize Web3
         self.w3 = Web3(Web3.HTTPProvider(self.rpc_url))
