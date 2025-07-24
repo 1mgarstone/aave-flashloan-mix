@@ -1,0 +1,43 @@
+
+dependencies:
+  - aave/aave-v3-core@1.17.2
+  - OpenZeppelin/openzeppelin-contracts@4.8.0
+
+compiler:
+  solc:
+    version: 0.8.19
+    optimizer:
+      enabled: true
+      runs: 200
+    remappings:
+      - "@aave=aave/aave-v3-core@1.17.2"
+      - "@openzeppelin=OpenZeppelin/openzeppelin-contracts@4.8.0"
+
+networks:
+  polygon-main:
+    host: https://polygon-rpc.com
+    chainid: 137
+    gas_price: 30000000000  # 30 gwei
+    gas_limit: 6000000
+    explorer: https://api.polygonscan.com/api
+  
+  polygon-mumbai:
+    host: https://rpc-mumbai.maticvigil.com
+    chainid: 80001
+    gas_price: 1000000000  # 1 gwei
+    gas_limit: 6000000
+    explorer: https://api-testnet.polygonscan.com/api
+
+wallets:
+  from_key: ${PRIVATE_KEY}
+  from_mnemonic: ${MNEMONIC}
+
+# Polygon-specific addresses
+networks:
+  polygon-main:
+    aave_lending_pool_v3: "0x794a61358D6845594F94dc1DB02A252b5b4814aD"
+    wmatic_token: "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270"
+    usdc_token: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"
+    weth_token: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619"
+    quickswap_router: "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff"
+    sushiswap_router: "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506"
