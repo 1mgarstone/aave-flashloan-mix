@@ -41,5 +41,5 @@ args = "echo \"Edit .env file with your credentials, then run: ./run_polygon_bot
 run = ["sh", "-c", "python run_dashboard.py"]
 
 [[ports]]
-localPort = 8383
-externalPort = 5000
+localPort = 5000
+externalPort = 80

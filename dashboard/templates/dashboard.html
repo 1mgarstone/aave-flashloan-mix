@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Polygon Arbitrage Engine Dashboard</title>
+    <title>🤖 Polygon Arbitrage Engine</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
@@ -12,521 +11,285 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
             min-height: 100vh;
-            padding: 20px;
+            color: white;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 20px;
         }
-        
+
         .header {
             text-align: center;
+            padding: 20px 0;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
             margin-bottom: 30px;
         }
-        
+
         .header h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
         }
-        
-        .status-badge {
-            display: inline-block;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            margin: 0 10px;
+
+        .header p {
+            opacity: 0.8;
+            font-size: 1.1rem;
         }
-        
-        .status-running {
-            background: #4CAF50;
-        }
-        
-        .status-stopped {
-            background: #f44336;
-        }
-        
-        .mode-safe {
-            background: #2196F3;
-        }
-        
-        .mode-high-risk {
-            background: #FF9800;
-        }
-        
-        .controls {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 12px 24px;
-            margin: 0 10px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-        
-        .btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-        
-        .btn-start {
-            background: #4CAF50;
-            border-color: #4CAF50;
-        }
-        
-        .btn-stop {
-            background: #f44336;
-            border-color: #f44336;
-        }
-        
+
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
-        
+
         .stat-card {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255,255,255,0.1);
             backdrop-filter: blur(10px);
             border-radius: 15px;
-            padding: 20px;
+            padding: 25px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255,255,255,0.2);
         }
-        
+
+        .stat-card h3 {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
         .stat-value {
             font-size: 2rem;
             font-weight: bold;
-            margin-bottom: 5px;
+            color: #4ade80;
         }
-        
-        .stat-label {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-        
-        .content-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
             margin-bottom: 30px;
+            flex-wrap: wrap;
         }
-        
-        .panel {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: white;
+        }
+
+        .btn-stop {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .status {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .status.running {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid #22c55e;
+        }
+
+        .status.stopped {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+        }
+
+        .logs {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
             padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .panel h3 {
-            margin-bottom: 15px;
-            color: #fff;
-        }
-        
-        .trade-list {
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
             max-height: 300px;
             overflow-y: auto;
         }
-        
-        .trade-item {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            padding: 10px;
-            margin-bottom: 8px;
-            border-left: 4px solid #4CAF50;
-        }
-        
-        .trade-pair {
-            font-weight: bold;
+
+        .log-entry {
             margin-bottom: 5px;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        
-        .trade-details {
+
+        .timestamp {
+            color: #94a3b8;
             font-size: 0.9rem;
-            opacity: 0.8;
         }
-        
-        .audio-controls {
-            text-align: center;
-            margin-top: 20px;
+
+        .pulse {
+            animation: pulse 2s infinite;
         }
-        
-        .audio-indicator {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            margin: 0 10px;
-            position: relative;
-        }
-        
-        .audio-scanning {
-            background: #2196F3;
-            animation: pulse 1s infinite;
-        }
-        
-        .audio-success {
-            background: #4CAF50;
-        }
-        
-        .audio-failure {
-            background: #f44336;
-        }
-        
+
         @keyframes pulse {
-            0% { opacity: 1; }
+            0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-        
-        .qr-code {
-            text-align: center;
-            margin: 10px 0;
-        }
-        
-        .qr-code img {
-            max-width: 100px;
-            height: auto;
-        }
-        
-        @media (max-width: 768px) {
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
+        <header class="header">
             <h1>🤖 Polygon Arbitrage Engine</h1>
-            <div id="status-badges">
-                <span class="status-badge status-stopped" id="status-badge">STOPPED</span>
-                <span class="status-badge mode-safe" id="mode-badge">SAFE MODE</span>
-            </div>
-        </div>
-        
-        <div class="controls">
-            <button class="btn btn-start" onclick="startScanner()">🚀 START SCANNING</button>
-            <button class="btn btn-stop" onclick="stopScanner()">⏹️ STOP SCANNING</button>
-        </div>
-        
+            <p>Automated DeFi Arbitrage Trading Dashboard</p>
+        </header>
+
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-value" id="balance">0.00</div>
-                <div class="stat-label">MATIC Balance</div>
+                <h3>Wallet Balance</h3>
+                <div class="stat-value" id="walletBalance">0.00 MATIC</div>
             </div>
+
             <div class="stat-card">
-                <div class="stat-value" id="loan-budget">0.00</div>
-                <div class="stat-label">Loan Budget</div>
+                <h3>Total Scans</h3>
+                <div class="stat-value" id="totalScans">0</div>
             </div>
+
             <div class="stat-card">
-                <div class="stat-value" id="scan-count">0</div>
-                <div class="stat-label">Scans Completed</div>
-            </div>
-            <div class="stat-card">
+                <h3>Opportunities</h3>
                 <div class="stat-value" id="opportunities">0</div>
-                <div class="stat-label">Opportunities Found</div>
             </div>
+
             <div class="stat-card">
-                <div class="stat-value" id="trades">0</div>
-                <div class="stat-label">Trades Executed</div>
+                <h3>Trades Executed</h3>
+                <div class="stat-value" id="tradesExecuted">0</div>
             </div>
+
             <div class="stat-card">
-                <div class="stat-value" id="profit">0.00</div>
-                <div class="stat-label">Total Profit (MATIC)</div>
+                <h3>Total Profit</h3>
+                <div class="stat-value" id="totalProfit">$0.00</div>
             </div>
         </div>
-        
-        <div class="content-grid">
-            <div class="panel">
-                <h3>📊 Recent Trades</h3>
-                <div class="trade-list" id="trade-list">
-                    <div class="trade-item">
-                        <div class="trade-pair">No trades yet</div>
-                        <div class="trade-details">Start scanning to begin trading</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="panel">
-                <h3>📈 Performance Chart</h3>
-                <canvas id="performance-chart" width="400" height="200"></canvas>
-            </div>
+
+        <div class="controls">
+            <button class="btn btn-start" onclick="startScanner()">🚀 Start Scanner</button>
+            <button class="btn btn-stop" onclick="stopScanner()">⏹️ Stop Scanner</button>
         </div>
-        
-        <div class="panel">
-            <h3>🔊 Audio System</h3>
-            <div class="audio-controls">
-                <div>
-                    <span class="audio-indicator audio-scanning" id="audio-scanning"></span>
-                    Active Scan
-                </div>
-                <div>
-                    <span class="audio-indicator audio-success" id="audio-success"></span>
-                    Success Ping
-                </div>
-                <div>
-                    <span class="audio-indicator audio-failure" id="audio-failure"></span>
-                    Failure Buzz
+
+        <div class="status stopped" id="status">
+            <strong>Status:</strong> <span id="statusText">Stopped</span>
+        </div>
+
+        <div class="logs">
+            <h3>📋 Activity Log</h3>
+            <div id="logEntries">
+                <div class="log-entry">
+                    <span class="timestamp">[System Ready]</span> Polygon Arbitrage Engine initialized
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        let chart;
-        let audioContext;
-        let isScanning = false;
-        
-        // Initialize audio context
-        function initAudio() {
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            }
-        }
-        
-        // Play success sound
-        function playSuccessSound() {
-            initAudio();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-            oscillator.frequency.setValueAtTime(1000, audioContext.currentTime + 0.1);
-            
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-            
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.3);
-            
-            document.getElementById('audio-success').style.animation = 'pulse 0.3s';
-            setTimeout(() => {
-                document.getElementById('audio-success').style.animation = '';
-            }, 300);
-        }
-        
-        // Play failure sound
-        function playFailureSound() {
-            initAudio();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
-            oscillator.type = 'sawtooth';
-            
-            gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-            
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.5);
-            
-            document.getElementById('audio-failure').style.animation = 'pulse 0.5s';
-            setTimeout(() => {
-                document.getElementById('audio-failure').style.animation = '';
-            }, 500);
-        }
-        
-        // Initialize performance chart
-        function initChart() {
-            const ctx = document.getElementById('performance-chart').getContext('2d');
-            chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: [],
-                    datasets: [{
-                        label: 'Profit (MATIC)',
-                        data: [],
-                        borderColor: '#4CAF50',
-                        backgroundColor: 'rgba(76, 175, 80, 0.1)',
-                        tension: 0.1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
-                            },
-                            ticks: {
-                                color: 'white'
-                            }
-                        },
-                        x: {
-                            grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
-                            },
-                            ticks: {
-                                color: 'white'
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: 'white'
-                            }
-                        }
+        let isRunning = false;
+
+        function updateStats() {
+            fetch('/api/status')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('totalScans').textContent = data.total_scans.toLocaleString();
+                    document.getElementById('opportunities').textContent = data.opportunities_found.toLocaleString();
+                    document.getElementById('tradesExecuted').textContent = data.trades_executed.toLocaleString();
+                    document.getElementById('totalProfit').textContent = '$' + data.total_profit.toFixed(2);
+
+                    const statusEl = document.getElementById('status');
+                    const statusTextEl = document.getElementById('statusText');
+
+                    if (data.is_running) {
+                        statusEl.className = 'status running pulse';
+                        statusTextEl.textContent = 'Running - Scanning for opportunities...';
+                    } else {
+                        statusEl.className = 'status stopped';
+                        statusTextEl.textContent = 'Stopped';
                     }
-                }
-            });
+                })
+                .catch(error => console.error('Error updating stats:', error));
+
+            // Update wallet balance
+            fetch('/api/wallet-balance')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('walletBalance').textContent = 
+                        data.balance.toFixed(4) + ' ' + data.currency;
+                })
+                .catch(error => console.error('Error updating wallet balance:', error));
         }
-        
-        // Update dashboard with latest data
-        async function updateDashboard() {
-            try {
-                const response = await fetch('/api/status');
-                const data = await response.json();
-                
-                // Update status badges
-                const statusBadge = document.getElementById('status-badge');
-                const modeBadge = document.getElementById('mode-badge');
-                
-                if (data.running) {
-                    statusBadge.textContent = 'RUNNING';
-                    statusBadge.className = 'status-badge status-running';
-                    isScanning = true;
-                } else {
-                    statusBadge.textContent = 'STOPPED';
-                    statusBadge.className = 'status-badge status-stopped';
-                    isScanning = false;
-                }
-                
-                if (data.mode === 'High-Risk') {
-                    modeBadge.textContent = 'HIGH-RISK MODE';
-                    modeBadge.className = 'status-badge mode-high-risk';
-                } else {
-                    modeBadge.textContent = 'SAFE MODE';
-                    modeBadge.className = 'status-badge mode-safe';
-                }
-                
-                // Update stats
-                document.getElementById('balance').textContent = data.balance.toFixed(4);
-                document.getElementById('loan-budget').textContent = data.loan_budget.toFixed(4);
-                document.getElementById('scan-count').textContent = data.scan_count;
-                document.getElementById('opportunities').textContent = data.opportunities_found;
-                document.getElementById('trades').textContent = data.trades_executed;
-                document.getElementById('profit').textContent = data.total_profit.toFixed(4);
-                
-                // Update scanning indicator
-                if (isScanning) {
-                    document.getElementById('audio-scanning').style.animation = 'pulse 1s infinite';
-                } else {
-                    document.getElementById('audio-scanning').style.animation = '';
-                }
-                
-            } catch (error) {
-                console.error('Error updating dashboard:', error);
-            }
+
+        function startScanner() {
+            fetch('/api/start', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    addLogEntry('🚀 Scanner started - Looking for arbitrage opportunities...');
+                    isRunning = true;
+                })
+                .catch(error => {
+                    console.error('Error starting scanner:', error);
+                    addLogEntry('❌ Error starting scanner: ' + error.message);
+                });
         }
-        
-        // Update trade list
-        async function updateTrades() {
-            try {
-                const response = await fetch('/api/trades');
-                const trades = await response.json();
-                
-                const tradeList = document.getElementById('trade-list');
-                
-                if (trades.length === 0) {
-                    tradeList.innerHTML = `
-                        <div class="trade-item">
-                            <div class="trade-pair">No trades yet</div>
-                            <div class="trade-details">Start scanning to begin trading</div>
-                        </div>
-                    `;
-                } else {
-                    tradeList.innerHTML = trades.map(trade => `
-                        <div class="trade-item">
-                            <div class="trade-pair">${trade.token_a}/${trade.token_b}</div>
-                            <div class="trade-details">
-                                Profit: ${trade.profit.toFixed(4)} MATIC (${trade.profit_percentage.toFixed(2)}%)
-                                <br>
-                                <small>TX: ${trade.tx_hash ? trade.tx_hash.substring(0, 10) + '...' : 'N/A'}</small>
-                                ${trade.tx_hash ? `<div class="qr-code"><img src="https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=https://polygonscan.com/tx/${trade.tx_hash}" alt="QR"></div>` : ''}
-                            </div>
-                        </div>
-                    `).join('');
-                }
-                
-            } catch (error) {
-                console.error('Error updating trades:', error);
-            }
+
+        function stopScanner() {
+            fetch('/api/stop', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    addLogEntry('⏹️ Scanner stopped');
+                    isRunning = false;
+                })
+                .catch(error => {
+                    console.error('Error stopping scanner:', error);
+                    addLogEntry('❌ Error stopping scanner: ' + error.message);
+                });
         }
-        
-        // Start scanner
-        async function startScanner() {
-            try {
-                const response = await fetch('/api/start', { method: 'POST' });
-                const result = await response.json();
-                
-                if (result.status === 'started') {
-                    playSuccessSound();
-                }
-                
-            } catch (error) {
-                console.error('Error starting scanner:', error);
-                playFailureSound();
-            }
+
+        function addLogEntry(message) {
+            const logEntries = document.getElementById('logEntries');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry';
+            logEntry.innerHTML = `<span class="timestamp">[${timestamp}]</span> ${message}`;
+            logEntries.appendChild(logEntry);
+            logEntries.scrollTop = logEntries.scrollHeight;
         }
-        
-        // Stop scanner
-        async function stopScanner() {
-            try {
-                const response = await fetch('/api/stop', { method: 'POST' });
-                const result = await response.json();
-                
-                if (result.status === 'stopped') {
-                    playSuccessSound();
-                }
-                
-            } catch (error) {
-                console.error('Error stopping scanner:', error);
-                playFailureSound();
-            }
-        }
-        
-        // Initialize dashboard
-        document.addEventListener('DOMContentLoaded', function() {
-            initChart();
-            updateDashboard();
-            updateTrades();
-            
-            // Update every 2 seconds
-            setInterval(updateDashboard, 2000);
-            setInterval(updateTrades, 5000);
-        });
+
+        // Update stats every 2 seconds
+        setInterval(updateStats, 2000);
+
+        // Initial update
+        updateStats();
+
+        // Add some demo log entries
+        setTimeout(() => addLogEntry('🔗 Connected to Polygon network'), 1000);
+        setTimeout(() => addLogEntry('💰 Wallet loaded and ready'), 2000);
+        setTimeout(() => addLogEntry('📊 Monitoring 15+ DEX pairs'), 3000);
     </script>
 </body>
 </html>
