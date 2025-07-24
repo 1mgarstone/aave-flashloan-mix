@@ -88,6 +88,10 @@ class PolygonArbitrageScanner:
         self.max_gas_price_gwei = 50
         self.scan_interval = 1  # 1 second between scans
 
+        # Load token pairs and DEX configurations
+        self.tokens = self._load_token_list()
+        self.dex_configs = self._load_dex_configs()
+
         # Load contract ABI
         self.contract_abi = self._load_contract_abi()
 
@@ -140,6 +144,26 @@ class PolygonArbitrageScanner:
                 ))
 
         return pairs
+
+    def _load_dex_configs(self) -> Dict:
+        """Load DEX router configurations for Polygon"""
+        return {
+            'quickswap': {
+                'router': '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff',
+                'factory': '0x5757371414417b8C6CAad45bAeF941aBc7d3Ab32',
+                'name': 'QuickSwap'
+            },
+            'sushiswap': {
+                'router': '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
+                'factory': '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
+                'name': 'SushiSwap'
+            },
+            'uniswap_v3': {
+                'router': '0xE592427A0AEce92De3Edee1F18E0157C05861564',
+                'factory': '0x1F98431c8aD98523631AE4a59f267346ea31F984',
+                'name': 'Uniswap V3'
+            }
+        }
 
     def _load_contract_abi(self) -> List:
         """Load the arbitrage contract ABI"""

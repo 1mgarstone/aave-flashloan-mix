@@ -5,7 +5,7 @@ run = "python run_dashboard.py"
 channel = "stable-25_05"
 
 [workflows]
-runButton = "Setup Polygon Bot"
+runButton = "Run Arbitrage Engine"
 
 [[workflows.workflow]]
 name = "Run Arbitrage Engine"
