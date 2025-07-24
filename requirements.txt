@@ -1,8 +1,8 @@
-
 eth-brownie>=1.19.0
-web3>=6.0.0
-flask>=2.3.0
-python-dotenv>=1.0.0
-requests>=2.31.0
-asyncio
+web3==6.15.1
+flask==3.0.0
+python-dotenv==1.0.0
+requests==2.31.0
+asyncio==3.4.3
+aiohttp==3.9.1
 sqlite3
